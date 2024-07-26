@@ -1,0 +1,81 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, LSTM, Dropout
+from tensorflow.keras.optimizers import Adam
+
+# Load the dataset
+df = pd.read_csv('path_to_your_stock_data.csv')  # Make sure to replace with your dataset path
+
+# Preprocessing
+# Select the 'Close' price column and convert to numpy array
+data = df['Close'].values.reshape(-1, 1)
+
+# Scale the data to be between 0 and 1
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_data = scaler.fit_transform(data)
+
+# Create training and testing datasets
+train_size = int(len(scaled_data) * 0.8)
+train_data = scaled_data[:train_size]
+test_data = scaled_data[train_size:]
+
+def create_dataset(dataset, time_step=1):
+    X, y = [], []
+    for i in range(len(dataset) - time_step - 1):
+        a = dataset[i:(i + time_step), 0]
+        X.append(a)
+        y.append(dataset[i + time_step, 0])
+    return np.array(X), np.array(y)
+
+time_step = 60
+X_train, y_train = create_dataset(train_data, time_step)
+X_test, y_test = create_dataset(test_data, time_step)
+
+# Reshape input to be [samples, time steps, features]
+X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
+X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
+
+# Create the LSTM model
+model = Sequential()
+model.add(LSTM(units=50, return_sequences=True, input_shape=(time_step, 1)))
+model.add(Dropout(0.2))
+model.add(LSTM(units=50, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(units=50))
+model.add(Dropout(0.2))
+model.add(Dense(units=1))
+
+model.compile(optimizer=Adam(learning_rate=0.001), loss='mean_squared_error')
+
+# Train the model
+history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test), verbose=1)
+
+# Predict the stock prices
+train_predict = model.predict(X_train)
+test_predict = model.predict(X_test)
+
+# Inverse transform to get actual stock prices
+train_predict = scaler.inverse_transform(train_predict)
+test_predict = scaler.inverse_transform(test_predict)
+y_train_actual = scaler.inverse_transform([y_train])
+y_test_actual = scaler.inverse_transform([y_test])
+
+# Plot the results
+plt.figure(figsize=(14, 5))
+plt.plot(df['Close'], label='Actual Stock Price')
+train_plot = np.empty_like(data)
+train_plot[:, :] = np.nan
+train_plot[time_step:len(train_predict) + time_step, :] = train_predict
+plt.plot(train_plot, label='Training Prediction')
+
+test_plot = np.empty_like(data)
+test_plot[:, :] = np.nan
+test_plot[len(train_predict) + (time_step * 2) + 1:len(data) - 1, :] = test_predict
+plt.plot(test_plot, label='Testing Prediction')
+plt.xlabel('Time')
+plt.ylabel('Stock Price')
+plt.legend()
+plt.show()
