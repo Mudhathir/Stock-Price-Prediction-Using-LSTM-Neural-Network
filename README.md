@@ -28,7 +28,9 @@ You can install these libraries using pip:
 pip install numpy pandas matplotlib scikit-learn tensorflow
 
 
-Usage
+##Usage
+
+
 1.Generate the Dataset: Use the CSV to generate the synthetic stock data for 2024
 
 2. Run the LSTM Model
