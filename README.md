@@ -4,16 +4,6 @@
 
 This project aims to predict stock prices using a Long Short-Term Memory (LSTM) neural network. The dataset consists of synthetic stock data for the year 2024.
 
-## Table of Contents
-- [Overview](#overview)
-- [Dataset](#dataset)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Results](#results)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
 ## Overview
 The goal of this project is to leverage the power of LSTM neural networks to predict future stock prices based on historical data. LSTMs are particularly well-suited for time series prediction due to their ability to learn long-term dependencies.
 
@@ -34,7 +24,7 @@ Date,Open,High,Low,Close,Volume
 ...
 
 
-Installation
+###Installation
 To run this project, you will need to have Python and the following libraries installed:
 
 numpy
@@ -45,11 +35,11 @@ tensorflow
 You can install these libraries using pip:   pip install numpy pandas matplotlib scikit-learn tensorflow
 
 
-Usage
-1. Generate the Dataset:
-Run the following script to generate the synthetic stock data for 2024:
-import csv
-from datetime import datetime, timedelta
+###Usage
+###1. Generate the Dataset:
+###Run the following script to generate the synthetic stock data for 2024:
+###import csv
+##from datetime import datetime, timedelta
 
 # Generate a sample CSV file with stock data for 2024
 start_date = datetime.strptime('2024-01-01', '%Y-%m-%d')
@@ -68,7 +58,7 @@ with open('stock_data_2024.csv', 'w', newline='') as file:
         volume = 1000 + (i * 10)
         writer.writerow([date.strftime('%Y-%m-%d'), open_price, high_price, low_price, close_price, volume])
 
-2. Run the LSTM Model:
+##2. Run the LSTM Model:
 Use the following script to train the LSTM model and make predictions:
 
 import numpy as np
@@ -158,17 +148,17 @@ plt.show()
 
 
 
-Results
+###Results
 The results of the LSTM model are visualized by plotting the actual stock prices and the model's predictions for both the training and testing datasets.
 
-Contributing
+###Contributing
 If you would like to contribute to this project, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
 
-Contact
-Email: msharifk2304@gmail.com
-LinkedIn: Mudhathir Sharif Khaja
-Thank you for checking out my project!
+#Contact
+#Email: msharifk2304@gmail.com
+#LinkedIn: Mudhathir Sharif Khaja
+#Thank you for checking out my project!
 
 
 
