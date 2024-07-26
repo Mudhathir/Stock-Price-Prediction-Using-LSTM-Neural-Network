@@ -7,7 +7,10 @@ from tensorflow.keras.layers import Dense, LSTM, Dropout
 from tensorflow.keras.optimizers import Adam
 
 # Load the dataset
-df = pd.read_csv('path_to_your_stock_data.csv')  # Make sure to replace with your dataset path
+df = pd.read_csv('stock_data_2024.csv')  # Replace with your dataset path
+
+# Check the dataframe structure
+print(df.head())
 
 # Preprocessing
 # Select the 'Close' price column and convert to numpy array
