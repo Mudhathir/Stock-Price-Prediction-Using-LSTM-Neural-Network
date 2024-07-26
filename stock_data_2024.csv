@@ -1,0 +1,20 @@
+import csv
+from datetime import datetime, timedelta
+
+# Generate a sample CSV file with stock data for 2024
+start_date = datetime.strptime('2024-01-01', '%Y-%m-%d')
+num_days = 365  # Number of days for one year
+
+with open('stock_data_2024.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
+    
+    for i in range(num_days):
+        date = start_date + timedelta(days=i)
+        open_price = 100 + (i * 0.1)  # Example: gradually increasing open price
+        high_price = open_price + 5
+        low_price = open_price - 5
+        close_price = open_price + 1  # Example: slightly higher close price
+        volume = 1000 + (i * 10)
+        writer.writerow([date.strftime('%Y-%m-%d'), open_price, high_price, low_price, close_price, volume])
+
